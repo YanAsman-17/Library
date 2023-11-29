@@ -1,9 +1,11 @@
-﻿#include <qwidget.h>
-#include <qapplication.h>
+﻿#include <qapplication.h>
 #include "AuxilFunctns.h"
-#include "MainWindow.h"
+#include "LoginForm.h"
+#include "RegistrForm.h"
+#include "Navigation.h"
 #include <iostream>
 #include <Windows.h>
+
 using namespace std;
 
 
@@ -14,9 +16,7 @@ int main(int argc, char *argv[])
     SetConsoleOutputCP(CP_UTF8);
 
     QApplication a(argc, argv);
-    MainWindow window;
+    RegistrForm window;
     window.show();    
     return a.exec();
-    
-    return 0;
 }

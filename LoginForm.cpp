@@ -1,5 +1,4 @@
-﻿#include "MainWindow.h"
-#include "ui_mainwindow.h"
+﻿#include "LoginForm.h"
 #include "qlineedit.h"
 #include "StyleHelper.h"
 #include "User.h"
@@ -11,12 +10,13 @@
 using namespace std;
 
 
-MainWindow::MainWindow(QWidget* parent)
+LoginForm::LoginForm(QMainWindow* parent)
     : QMainWindow(parent)
-    , ui(new Ui::MainWindow) , conn(nullptr)
+    , ui(new Ui::LoginForm) , conn(nullptr)
 {
     ui->setupUi(this);
     setInterfaceStyle();
+    ui->tittle->setFocus();
     ui->loginInpLine->installEventFilter(this);
     ui->passInpLine->installEventFilter(this);
 
@@ -28,19 +28,31 @@ MainWindow::MainWindow(QWidget* parent)
     catch (...) {
         cerr << "Error" << endl;
     }
-    connect(ui->entryBtn, &QPushButton::clicked, this, &MainWindow::checkUser);
-    connect(ui->passInpLine, &QLineEdit::textEdited, this, &MainWindow::hidePass1);
+    connect(ui->entryBtn, &QPushButton::clicked, this, &LoginForm::checkUser);
+    connect(ui->passInpLine, &QLineEdit::textEdited, this, &LoginForm::hidePass);
 }
 
-void MainWindow::hidePass1() {
-    int textLen = ui->passInpLine->text().length();
-    QChar addSymb = ui->passInpLine->text()[textLen - 1];
-    password << QString(addSymb).toUtf8().constData();
-    string stars(textLen, '*');
+void LoginForm::hidePass() {
+
+    static int lenTextPrev = -1;
+    int lenText = ui->passInpLine->text().length();
+  
+    if (lenText > lenTextPrev) {
+        QChar addSymb = ui->passInpLine->text()[lenText - 1];
+        password << QString(addSymb).toUtf8().constData();
+    }
+    else {
+        string strPass = password.str();
+        password.str(std::string());;
+        password << strPass.substr(0, strPass.length() - 1);
+    }
+    string stars(lenText, '*');
     ui->passInpLine->setText(QString::fromUtf8(stars));
+
+    lenTextPrev = lenText;
 }
 
-bool MainWindow::eventFilter(QObject* object, QEvent* event)
+bool LoginForm::eventFilter(QObject* object, QEvent* event)
 {
     static bool isLogInpLineChange = false;
     static bool isPassInpLineChange = false;
@@ -59,7 +71,7 @@ bool MainWindow::eventFilter(QObject* object, QEvent* event)
 }
 
 
-User MainWindow::checkUser() {
+User LoginForm::checkUser() {
 
     string login = ui->loginInpLine->text().toStdString();
     string pass = password.str();
@@ -98,16 +110,17 @@ User MainWindow::checkUser() {
 }
 
 
-MainWindow::~MainWindow()
+LoginForm::~LoginForm()
 {
     delete ui;
-    //conn->close();
+    conn->close();
 }
 
 
-void MainWindow::setInterfaceStyle()
+void LoginForm::setInterfaceStyle()
 {
-    ui->centralwidget->setStyleSheet(StyleHelper::getWidgetStyle());
+    ui->centralwidget->setStyleSheet(StyleHelper::getCentralWidgetStyle());
+    ui->widget->setStyleSheet(StyleHelper::getWidgetStyle());
     ui->entryBtn->setStyleSheet(StyleHelper::getButtonsStyle());
     ui->regBtn->setStyleSheet(StyleHelper::getButtonsStyle());
     ui->loginInpLine->setStyleSheet(StyleHelper::getInputLineStyle());

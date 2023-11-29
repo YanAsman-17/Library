@@ -8,5 +8,6 @@ public:
 	static QString getButtonsStyle();
 	static QString getInputLineStyle();
 	static QString getChangedInputLineStyle();
+	static QString getCentralWidgetStyle();
 };
 

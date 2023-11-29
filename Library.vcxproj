@@ -113,22 +113,32 @@
   <ItemGroup>
     <ClCompile Include="AuxilFunctns.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="MainWindow.cpp" />
+    <ClCompile Include="LoginForm.cpp" />
+    <ClCompile Include="Navigation.cpp">
+      <DynamicSource Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">input</DynamicSource>
+      <QtMocFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">%(Filename).moc</QtMocFileName>
+      <DynamicSource Condition="'$(Configuration)|$(Platform)'=='Release|x64'">input</DynamicSource>
+      <QtMocFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">%(Filename).moc</QtMocFileName>
+    </ClCompile>
+    <ClCompile Include="RegistrForm.cpp" />
     <ClCompile Include="sha256.cpp" />
     <ClCompile Include="StyleHelper.cpp" />
     <ClCompile Include="User.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <QtUic Include="MainWindow.ui" />
-  </ItemGroup>
-  <ItemGroup>
     <ClInclude Include="AuxilFunctns.h" />
+    <ClInclude Include="Navigation.h" />
+    <QtMoc Include="RegistrForm.h" />
     <ClInclude Include="User.h" />
-    <ClInclude Include="x64\Release\uic\ui_MainWindow.h" />
-    <QtMoc Include="MainWindow.h" />
+    <ClInclude Include="x64\Release\uic\ui_LoginForm.h" />
+    <ClInclude Include="x64\Release\uic\ui_RegistrForm.h" />
+    <QtMoc Include="LoginForm.h" />
     <ClInclude Include="sha256.h" />
     <ClInclude Include="StyleHelper.h" />
-    <ClInclude Include="ui_mainwindow.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <QtUic Include="LoginForm.ui" />
+    <QtUic Include="RegistrForm.ui" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">
