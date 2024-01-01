@@ -38,7 +38,7 @@
    <property name="inputMethodHints">
     <set>Qt::ImhHiddenText</set>
    </property>
-   <layout class="QGridLayout" name="gridLayout">
+   <layout class="QGridLayout" name="centralwidgetLayout">
     <property name="topMargin">
      <number>0</number>
     </property>
@@ -107,8 +107,8 @@
      </spacer>
     </item>
     <item row="1" column="1">
-     <widget class="QWidget" name="widget" native="true">
-      <layout class="QVBoxLayout" name="verticalLayout">
+     <widget class="QWidget" name="mainWidget" native="true">
+      <layout class="QVBoxLayout" name="mainWidgetLayout">
        <property name="leftMargin">
         <number>40</number>
        </property>
@@ -122,7 +122,7 @@
         <number>60</number>
        </property>
        <item>
-        <widget class="QLabel" name="tittle">
+        <widget class="QLabel" name="title">
          <property name="font">
           <font>
            <family>Cascadia Code SemiLight</family>
@@ -256,7 +256,7 @@
             <set>Qt::ImhPreferNumbers</set>
            </property>
            <property name="text">
-            <string>janasman17@gmail.com</string>
+            <string>janasman17</string>
            </property>
            <property name="maxLength">
             <number>32</number>
@@ -265,7 +265,7 @@
             <bool>false</bool>
            </property>
            <property name="cursorPosition">
-            <number>20</number>
+            <number>10</number>
            </property>
            <property name="placeholderText">
             <string/>
@@ -385,7 +385,7 @@
             <string notr="true"/>
            </property>
            <property name="inputMethodHints">
-            <set>Qt::ImhNone</set>
+            <set>Qt::ImhHiddenText|Qt::ImhNoAutoUppercase|Qt::ImhNoPredictiveText|Qt::ImhSensitiveData</set>
            </property>
            <property name="text">
             <string>Q34fs_pfeas</string>
@@ -395,6 +395,9 @@
            </property>
            <property name="frame">
             <bool>false</bool>
+           </property>
+           <property name="echoMode">
+            <enum>QLineEdit::Password</enum>
            </property>
            <property name="cursorPosition">
             <number>11</number>

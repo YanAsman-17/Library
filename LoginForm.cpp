@@ -1,63 +1,84 @@
-﻿#include "LoginForm.h"
+﻿#include <cppconn/resultset.h> 
+#include <cppconn/prepared_statement.h>
+#include <QRegExp>
 #include "qlineedit.h"
 #include "StyleHelper.h"
-#include "User.h"
 #include "sha256.h"
-#include "string"
-#include <iostream>
+#include "LoginForm.h"
 #include "AuxilFunctns.h"
 
-using namespace std;
 
 
-LoginForm::LoginForm(QMainWindow* parent)
-    : QMainWindow(parent)
-    , ui(new Ui::LoginForm) , conn(nullptr)
+LoginForm::LoginForm(std::shared_ptr<sql::Connection> conn_,QMainWindow* parent) noexcept
+    : QMainWindow(parent) , conn(conn_)
+    , ui(new Ui::LoginForm) , isLogInpLineChange(false), isPassInpLineChange(false), lenTextPrev(0)
 {
     ui->setupUi(this);
+
     setInterfaceStyle();
-    ui->tittle->setFocus();
     ui->loginInpLine->installEventFilter(this);
     ui->passInpLine->installEventFilter(this);
 
-    try {
-        sql::Driver* driver = get_driver_instance();
-        conn.reset(driver->connect("tcp://127.0.0.1:3306", "root", "kriogen701"));
-        conn->setSchema("diglib");
-    }
-    catch (...) {
-        cerr << "Error" << endl;
-    }
-    connect(ui->entryBtn, &QPushButton::clicked, this, &LoginForm::checkUser);
-    connect(ui->passInpLine, &QLineEdit::textEdited, this, &LoginForm::hidePass);
+    //resetForm(); //если запускать LoginForm по отдельности надо раскомментировать эту строку
+
 }
 
-void LoginForm::hidePass() {
-
-    static int lenTextPrev = -1;
-    int lenText = ui->passInpLine->text().length();
-  
-    if (lenText > lenTextPrev) {
-        QChar addSymb = ui->passInpLine->text()[lenText - 1];
-        password << QString(addSymb).toUtf8().constData();
-    }
-    else {
-        string strPass = password.str();
-        password.str(std::string());;
-        password << strPass.substr(0, strPass.length() - 1);
-    }
-    string stars(lenText, '*');
-    ui->passInpLine->setText(QString::fromUtf8(stars));
-
-    lenTextPrev = lenText;
-}
-
-bool LoginForm::eventFilter(QObject* object, QEvent* event)
+void LoginForm::resetForm() noexcept
 {
-    static bool isLogInpLineChange = false;
-    static bool isPassInpLineChange = false;
+    ui->title->setFocus();
+    ui->loginInpLine->setText("janasman17");
+    ui->passInpLine->setText("Q34fs_pfeas");
+    ui->hint->setText("");
+    lenTextPrev = 0;
 
-    if (object == ui->loginInpLine && event->type() == QEvent::FocusIn && !isLogInpLineChange) {
+    ui->loginInpLine->setStyleSheet(StyleHelper::getInputLineStyle());
+    ui->passInpLine->setStyleSheet(StyleHelper::getInputLineStyle());
+
+    isLogInpLineChange = false;
+    isPassInpLineChange = false;
+}
+
+UserInfrom LoginForm::checkUser() noexcept {  //проверяем есть ли пользователь в бд,если есть возвращем его id,ялвяется ли админом
+
+    std::string login = ui->loginInpLine->text().toStdString();
+    std::string pass = ui->passInpLine->text().toStdString();
+
+    try {
+        std::string strGetUserSalt = "SELECT salt FROM users WHERE login LIKE BINARY ?";
+        std::unique_ptr<sql::PreparedStatement> pstmtGetUserSalt(conn->prepareStatement(strGetUserSalt));
+        pstmtGetUserSalt->setString(1, login);
+        std::unique_ptr<sql::ResultSet> resGetUserSalt(pstmtGetUserSalt->executeQuery());
+        if (resGetUserSalt->next()) {
+            std::string salt = resGetUserSalt->getString(1);
+            std::string intermHash = sha256(pass + salt);
+            std::string sharSalt = getSharedSalt();
+            std::string hashPass = sha256(intermHash + sharSalt);
+
+            std::string strCheckUserInBd = "SELECT id ,isAdmin FROM users WHERE login LIKE BINARY ? AND hashPass LIKE BINARY ?";
+            std::unique_ptr<sql::PreparedStatement> pstmtCheckUserInBd(conn->prepareStatement(strCheckUserInBd));
+            pstmtCheckUserInBd->setString(1, login);
+            pstmtCheckUserInBd->setString(2, hashPass);
+            std::unique_ptr<sql::ResultSet> resCheckUserInBd(pstmtCheckUserInBd->executeQuery());
+
+            if (resCheckUserInBd->next() != 0) {
+                int userId =  resCheckUserInBd->getInt("id");
+                bool isAdmin = resCheckUserInBd->getInt("isAdmin");
+                return UserInfrom(userId,isAdmin);
+            }
+        }
+        ui->hint->setText("Неверный логин или пороль");
+    }
+    catch (const sql::SQLException& ex) {
+        ui->hint->setText("Произошла ошибка при входе ,повторите попытку или вернитесь позднее");
+        std::cerr << "problem with connection in LoginForm::checkUser" << std::endl;
+
+    }
+    return UserInfrom(0, false);
+}
+
+bool LoginForm::eventFilter(QObject* object, QEvent* event) noexcept
+{
+    if (object == ui->loginInpLine && event->type() == QEvent::FocusIn && !isLogInpLineChange) { // Событие первого нажатия на строку ввода
         ui->loginInpLine->setText("");
         ui->loginInpLine->setStyleSheet(StyleHelper::getChangedInputLineStyle());
         isLogInpLineChange = true;
@@ -71,59 +92,23 @@ bool LoginForm::eventFilter(QObject* object, QEvent* event)
 }
 
 
-User LoginForm::checkUser() {
-
-    string login = ui->loginInpLine->text().toStdString();
-    string pass = password.str();
-
-    cout << pass << endl;
-    try {
-        string strGetUserSalt = "SELECT salt FROM users WHERE login LIKE BINARY ?";
-        unique_ptr<sql::PreparedStatement> pstmtGetUserSalt(conn->prepareStatement(strGetUserSalt));
-        pstmtGetUserSalt->setString(1, login);
-        unique_ptr<sql::ResultSet> resGetUserSalt(pstmtGetUserSalt->executeQuery());
-        if (resGetUserSalt->next()) {
-            string salt = resGetUserSalt->getString(1);
-            string intermHash = sha256(pass + salt);
-            string sharSalt = getSharedSalt();
-            string hashPass = sha256(intermHash + sharSalt);
-
-            string strCheckUserInBd = "SELECT id FROM users WHERE login LIKE BINARY ? AND hashPass LIKE BINARY ?";
-            unique_ptr<sql::PreparedStatement> pstmtCheckUserInBd(conn->prepareStatement(strCheckUserInBd));
-            pstmtCheckUserInBd->setString(1, login);
-            pstmtCheckUserInBd->setString(2, hashPass);
-            unique_ptr<sql::ResultSet> resCheckUserInBd(pstmtCheckUserInBd->executeQuery());
-
-            if (resCheckUserInBd->next() != 0) {
-                ui->hint->setText("Вы вошли в личный кабинет");
-                User user(resCheckUserInBd->getInt("id"));
-                return user;
-            }
-        }
-        ui->hint->setText("Неверный логин или пороль");
-    }
-    catch (const sql::SQLException& ex) {
-        ui->hint->setText("Произошла ошибка при вхоже ,повторите попытку или вернитесь позднее");
-        return User(-1);
-    }
-    return User(-1);
-}
-
-
-LoginForm::~LoginForm()
-{
-    delete ui;
-    conn->close();
-}
-
-
-void LoginForm::setInterfaceStyle()
+void LoginForm::setInterfaceStyle() noexcept
 {
     ui->centralwidget->setStyleSheet(StyleHelper::getCentralWidgetStyle());
-    ui->widget->setStyleSheet(StyleHelper::getWidgetStyle());
+    ui->mainWidget->setStyleSheet(StyleHelper::getMainWidgetStyle());
     ui->entryBtn->setStyleSheet(StyleHelper::getButtonsStyle());
     ui->regBtn->setStyleSheet(StyleHelper::getButtonsStyle());
     ui->loginInpLine->setStyleSheet(StyleHelper::getInputLineStyle());
     ui->passInpLine->setStyleSheet(StyleHelper::getInputLineStyle());
 }
 
+LoginForm::~LoginForm() noexcept
+{
+    delete ui;
+}
+
+UserInfrom::UserInfrom(int userId, bool isAdmin)
+{
+    this->userId = userId;
+    this->isAdmin = isAdmin;
+}

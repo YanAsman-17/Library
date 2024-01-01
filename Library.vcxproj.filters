@@ -29,9 +29,6 @@
     <ClCompile Include="StyleHelper.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="User.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="AuxilFunctns.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -47,6 +44,42 @@
     <ClCompile Include="RegistrForm.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="MenuForm.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="LibBooksForm.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PixmapLabel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="BookWidget.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ButtonBack.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CheckBookForm.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="BooksOutput.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="UserBooksForm.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="BookReaderForm.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="AdminMenuForm.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GetPrintBookForm.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="AdminMainForm.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="StyleHelper.h">
@@ -55,19 +88,49 @@
     <ClInclude Include="sha256.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="User.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="AuxilFunctns.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="x64\Release\uic\ui_LoginForm.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Navigation.h">
+    <ClInclude Include="x64\Release\uic\ui_RegistrForm.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="x64\Release\uic\ui_RegistrForm.h">
+    <ClInclude Include="MenuForm.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="x64\Release\uic\ui_MenuForm.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PixmapLabel.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BookWidget.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ButtonBack.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="x64\Release\uic\ui_CheckBookForm.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BookReaderForm.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="x64\Release\uic\ui_BookReaderForm.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="AdminMenuForm.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GetPrintBookForm.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="AdminMainForm.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="NavigationIndexes.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -78,12 +141,48 @@
     <QtUic Include="RegistrForm.ui">
       <Filter>Form Files</Filter>
     </QtUic>
+    <QtUic Include="MenuForm.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+    <QtUic Include="BooksOutput.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+    <QtUic Include="CheckBookForm.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+    <QtUic Include="BookReaderForm.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+    <QtUic Include="AdminMenuForm.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+    <QtUic Include="GetPrintBookForm.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+    <QtUic Include="AdminMainForm.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
   </ItemGroup>
   <ItemGroup>
+    <QtMoc Include="LoginForm.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
     <QtMoc Include="RegistrForm.h">
       <Filter>Header Files</Filter>
     </QtMoc>
-    <QtMoc Include="LoginForm.h">
+    <QtMoc Include="Navigation.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="LibBooksForm.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="BooksOutput.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="UserBooksForm.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="CheckBookForm.h">
       <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>

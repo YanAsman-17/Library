@@ -38,12 +38,12 @@
   </ImportGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'" Label="QtSettings">
     <QtInstall>6.6.0_msvc2019_64</QtInstall>
-    <QtModules>designer;core;gui;sql;widgets</QtModules>
+    <QtModules>core;gui;widgets;core5compat;sql;designer</QtModules>
     <QtBuildConfig>debug</QtBuildConfig>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'" Label="QtSettings">
     <QtInstall>6.6.0_msvc2019_64</QtInstall>
-    <QtModules>core;gui;widgets;sql;designer</QtModules>
+    <QtModules>core;gui;widgets;core5compat;sql;designer</QtModules>
     <QtBuildConfig>release</QtBuildConfig>
   </PropertyGroup>
   <Target Name="QtMsBuildNotFound" BeforeTargets="CustomBuild;ClCompile" Condition="!Exists('$(QtMsBuild)\qt.targets') or !Exists('$(QtMsBuild)\qt.props')">
@@ -61,6 +61,9 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <ExecutablePath>$(VC_ExecutablePath_x64);$(CommonExecutablePath)</ExecutablePath>
+    <LibraryPath>D:\my_libs\lib\Win64;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);D:\my_libs\include</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
     <LinkIncremental>false</LinkIncremental>
@@ -69,9 +72,13 @@
     <Link>
       <EntryPointSymbol>
       </EntryPointSymbol>
+      <AdditionalLibraryDirectories>D:\NewProjects\mysql8.2.0-winx64\lib64\vs14\debug</AdditionalLibraryDirectories>
+      <AdditionalDependencies>mysqlcppconn-static.lib;%(AdditionalDependencies);$(Qt_LIBS_)</AdditionalDependencies>
     </Link>
     <ClCompile>
-      <RuntimeLibrary>$(Qt_RUNTIME_)</RuntimeLibrary>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <AdditionalIncludeDirectories>D:\NewProjects\mysql8.2.0-winx64\include\jdbc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>STATIC_CONCPP;$(Qt_DEFINES_);%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -84,6 +91,7 @@
       <AdditionalDependencies>$(CoreLibraryDependencies);mysqlcppconn-static.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <EntryPointSymbol>
       </EntryPointSymbol>
+      <StackCommitSize> 4194304</StackCommitSize>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'" Label="Configuration">
@@ -94,7 +102,7 @@
       <Optimization>Disabled</Optimization>
     </ClCompile>
     <Link>
-      <SubSystem>Windows</SubSystem>
+      <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
@@ -111,33 +119,66 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="AdminMainForm.cpp" />
+    <ClCompile Include="AdminMenuForm.cpp" />
     <ClCompile Include="AuxilFunctns.cpp" />
+    <ClCompile Include="BooksOutput.cpp" />
+    <ClCompile Include="BookWidget.cpp" />
+    <ClCompile Include="ButtonBack.cpp" />
+    <ClCompile Include="CheckBookForm.cpp" />
+    <ClCompile Include="GetPrintBookForm.cpp" />
+    <ClCompile Include="LibBooksForm.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="LoginForm.cpp" />
+    <ClCompile Include="BookReaderForm.cpp" />
+    <ClCompile Include="MenuForm.cpp" />
     <ClCompile Include="Navigation.cpp">
       <DynamicSource Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">input</DynamicSource>
       <QtMocFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">%(Filename).moc</QtMocFileName>
       <DynamicSource Condition="'$(Configuration)|$(Platform)'=='Release|x64'">input</DynamicSource>
       <QtMocFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">%(Filename).moc</QtMocFileName>
     </ClCompile>
+    <ClCompile Include="PixmapLabel.cpp" />
     <ClCompile Include="RegistrForm.cpp" />
     <ClCompile Include="sha256.cpp" />
     <ClCompile Include="StyleHelper.cpp" />
-    <ClCompile Include="User.cpp" />
+    <ClCompile Include="UserBooksForm.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AdminMainForm.h" />
+    <ClInclude Include="AdminMenuForm.h" />
     <ClInclude Include="AuxilFunctns.h" />
-    <ClInclude Include="Navigation.h" />
+    <QtMoc Include="Navigation.h" />
     <QtMoc Include="RegistrForm.h" />
-    <ClInclude Include="User.h" />
+    <QtMoc Include="BooksOutput.h" />
+    <ClInclude Include="BookWidget.h" />
+    <ClInclude Include="ButtonBack.h" />
+    <QtMoc Include="CheckBookForm.h" />
+    <QtMoc Include="LibBooksForm.h" />
+    <ClInclude Include="BookReaderForm.h" />
+    <ClInclude Include="GetPrintBookForm.h" />
+    <ClInclude Include="MenuForm.h" />
+    <ClInclude Include="NavigationIndexes.h" />
+    <ClInclude Include="PixmapLabel.h" />
+    <QtMoc Include="UserBooksForm.h" />
+    <ClInclude Include="x64\Release\uic\ui_BookReaderForm.h" />
+    <ClInclude Include="x64\Release\uic\ui_CheckBookForm.h" />
     <ClInclude Include="x64\Release\uic\ui_LoginForm.h" />
+    <ClInclude Include="x64\Release\uic\ui_MenuForm.h" />
     <ClInclude Include="x64\Release\uic\ui_RegistrForm.h" />
     <QtMoc Include="LoginForm.h" />
     <ClInclude Include="sha256.h" />
     <ClInclude Include="StyleHelper.h" />
   </ItemGroup>
   <ItemGroup>
+    <QtUic Include="AdminMainForm.ui" />
+    <QtUic Include="AdminMenuForm.ui" />
+    <QtUic Include="CheckBookForm.ui" />
+    <QtUic Include="BooksOutput.ui" />
+    <QtUic Include="GetPrintBookForm.ui" />
     <QtUic Include="LoginForm.ui" />
+    <QtUic Include="BookReaderForm.ui" />
+    <QtUic Include="MenuForm.ui" />
     <QtUic Include="RegistrForm.ui" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

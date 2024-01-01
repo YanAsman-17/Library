@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>750</width>
-    <height>500</height>
+    <width>800</width>
+    <height>519</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -50,7 +50,7 @@
      </spacer>
     </item>
     <item row="1" column="1">
-     <widget class="QWidget" name="widget" native="true">
+     <widget class="QWidget" name="mainWidget" native="true">
       <property name="sizePolicy">
        <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
         <horstretch>0</horstretch>
@@ -63,7 +63,7 @@
         <height>0</height>
        </size>
       </property>
-      <layout class="QVBoxLayout" name="verticalLayout">
+      <layout class="QVBoxLayout" name="mainWidgetLayout">
        <property name="spacing">
         <number>5</number>
        </property>
@@ -80,7 +80,7 @@
         <number>30</number>
        </property>
        <item>
-        <widget class="QLabel" name="tittle">
+        <widget class="QLabel" name="title">
          <property name="font">
           <font>
            <family>Cascadia Code SemiLight</family>
@@ -94,6 +94,9 @@
          </property>
          <property name="alignment">
           <set>Qt::AlignCenter</set>
+         </property>
+         <property name="wordWrap">
+          <bool>true</bool>
          </property>
         </widget>
        </item>
@@ -643,6 +646,21 @@
           </spacer>
          </item>
         </layout>
+       </item>
+       <item alignment="Qt::AlignHCenter">
+        <widget class="QLabel" name="hint">
+         <property name="font">
+          <font>
+           <pointsize>12</pointsize>
+          </font>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignHCenter|Qt::AlignTop</set>
+         </property>
+        </widget>
        </item>
        <item>
         <spacer name="passRegSpacer">

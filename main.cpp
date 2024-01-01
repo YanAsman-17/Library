@@ -1,14 +1,10 @@
 ﻿#include <qapplication.h>
-#include "AuxilFunctns.h"
+#include "Navigation.h"
 #include "LoginForm.h"
 #include "RegistrForm.h"
-#include "Navigation.h"
-#include <iostream>
 #include <Windows.h>
-
-using namespace std;
-
-
+#include "BookWidget.h"
+//#include "vld.h"
 
 int main(int argc, char *argv[])
 {
@@ -16,7 +12,9 @@ int main(int argc, char *argv[])
     SetConsoleOutputCP(CP_UTF8);
 
     QApplication a(argc, argv);
-    RegistrForm window;
-    window.show();    
+    Navigation window;
+    window.show(); 
+    
     return a.exec();
+
 }
