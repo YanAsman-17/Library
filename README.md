@@ -11,6 +11,7 @@ C++, Qt , MySQL, MySQL Connector/C++
   <summary>Скриншоты</summary>
 
   Окно регистрации
+<<<<<<< HEAD
   ![Register](ReadmeLibraryImages/Register.png)
   Окно входа
   ![LogIn](ReadmeLibraryImages/LogIn.png)
@@ -26,6 +27,23 @@ C++, Qt , MySQL, MySQL Connector/C++
   ![Book2](ReadmeLibraryImages/Book2.png)
   Главное окно администратора
   ![Admin](ReadmeLibraryImages/Admin.png)
+=======
+  ![Register](LibraryImages/Register.png)
+  Окно входа
+  ![LogIn](LibraryImages/LogIn.png)
+  Меню пользователя
+  ![Menu](LibraryImages/Menu.png)
+  Библиотечные книги
+  ![LibraryBooks](LibraryImages/LibraryBooks.png)
+  Информация о книге
+  ![Book1](LibraryImages/Book1.png)
+  Книги пользователя
+  ![UserBooks](LibraryImages/UserBooks.png)
+  Забронированная книга
+  ![Book2](LibraryImages/Book2.png)
+  Главное окно администратора
+  ![Admin](LibraryImages/Admin.png)
+>>>>>>> 22347750ffe6ba02fbc516b7da7846f535ca8af2
 </details>
 
 ## Запуск проекта:
